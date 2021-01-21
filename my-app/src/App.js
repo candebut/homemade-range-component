@@ -1,15 +1,32 @@
 import React from "react";
+import Range from "./components/Range.js";
 import "./App.css";
-import ReactDOM from "react-dom";
-import PropTypes from "prop-types";
+import { myFetch } from "./utils/helper";
+// import ReactDOM from "react-dom";
+// import PropTypes from "prop-types";
 
 class App extends React.Component {
   state = {
+    min: 0,
+    max: 24,
     slots: 24,
     start: 0,
     end: 10,
     labelMode: "mid", // mid, long
   };
+
+  async componentDidMount() {
+    try {
+      const response = await myFetch("minmaxvalues");
+      this.setState({
+        min: response.min,
+        slots: response.max,
+        max: response.max,
+      });
+    } catch (error) {
+      alert("Hubo un error. Intente nuevamente.");
+    }
+  }
 
   onDragOver = (e) => {
     e.preventDefault();
@@ -153,7 +170,6 @@ class App extends React.Component {
   }
 }
 export default App;
-// ReactDOM.render(<App />, document.getElementById("root"));
 
 var DragDropTouch;
 (function (DragDropTouch_1) {
