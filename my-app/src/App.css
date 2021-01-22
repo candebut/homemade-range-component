@@ -39,6 +39,22 @@ h4 {
   border-radius: 50%;
   top: -8px;
   touch-action: none;
+  cursor: move;
+  cursor: grab;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+  transition: 0.3s;
+}
+
+.slider-thumb:active {
+  cursor: grabbing !important;
+  cursor: -moz-grabbing;
+  cursor: -webkit-grabbing;
+}
+
+.slider-thumb:hover {
+  width: 25px;
+  height: 25px;
 }
 
 .slider-thumb-min {

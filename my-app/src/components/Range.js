@@ -8,7 +8,6 @@ class Range extends React.Component {
     slots: this.props.slots,
     start: this.props.start,
     end: this.props.end,
-    labelMode: this.props.labelMode,
   };
 
   onDragOver = (e) => {
@@ -18,17 +17,12 @@ class Range extends React.Component {
   onDragStart = (e) => {
     let slider = e.target.dataset.slider;
     this.sliderType = slider;
-    //e.dataTransfer.setData("text/plain", slider)
   };
 
   onDrag = (e) => {};
 
   onDrop = (e, target) => {
-    //let source = e.dataTransfer.getData("text/plain");
-
-    //determina si es el de start o end
     let source = this.sliderType;
-    //numero de slot en el que estamos parados
     let slot = Number(e.target.dataset.slot);
     console.log(slot);
 
@@ -164,7 +158,6 @@ class Range extends React.Component {
             onChange={(e) => this.setState({ start: e.target.value })}
           />
         </EditableBox>
-        {/* <input className="minSetter" /> */}
         <div className="range-container">
           <div className="example-1">
             <div className="slider-container">

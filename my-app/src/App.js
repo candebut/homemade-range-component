@@ -2,8 +2,6 @@ import React from "react";
 import Range from "./components/Range.js";
 import "./App.css";
 import { myFetch } from "./utils/helper";
-// import ReactDOM from "react-dom";
-// import PropTypes from "prop-types";
 
 class App extends React.Component {
   state = {
@@ -13,11 +11,9 @@ class App extends React.Component {
     start: 10,
     end: 20,
     loading: true,
-    labelMode: "mid", // mid, long
   };
 
   async componentDidMount() {
-    console.log(this.state);
     try {
       const response = await myFetch("minmaxvalues");
       this.setState({
@@ -26,7 +22,6 @@ class App extends React.Component {
         max: response.max,
         loading: false,
       });
-      console.log(this.state);
     } catch (error) {
       alert("Hubo un error. Intente nuevamente.");
     }

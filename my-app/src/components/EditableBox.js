@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-const Editable = ({ text, type, placeholder, children, ...props }) => {
+
+const Editable = ({ text, type, children, ...props }) => {
   const [isEditing, setEditing] = useState(false);
 
   const handleKeyDown = (event, type) => {
@@ -20,7 +21,7 @@ const Editable = ({ text, type, placeholder, children, ...props }) => {
         </div>
       ) : (
         <div onClick={() => setEditing(true)}>
-          <span>{text || placeholder}</span>
+          <span>{text}</span>
         </div>
       )}
     </section>
