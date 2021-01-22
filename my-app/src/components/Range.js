@@ -8,6 +8,8 @@ class Range extends React.Component {
     slots: this.props.slots,
     start: this.props.start,
     end: this.props.end,
+    fixed: this.props.fixed,
+    fixedValues: this.props.fixedValues,
   };
 
   onDragOver = (e) => {
@@ -69,7 +71,14 @@ class Range extends React.Component {
   };
 
   render() {
-    console.log(this.state);
+    if (
+      this.state.start < this.state.min ||
+      this.state.start > this.state.end ||
+      this.state.end < this.state.start ||
+      this.state.end > this.state.max
+    ) {
+      alert("El numero ingresado es incorrecto");
+    }
     let scale = [];
     let slider = [];
     let currentScale = [];
@@ -80,21 +89,14 @@ class Range extends React.Component {
       let label = "";
 
       //cambiar cuando sea con franjas
-      if (
-        i === 15 ||
-        i === 30 ||
-        i === 45 ||
-        i === 60 ||
-        i === 75 ||
-        i === 90
-      ) {
+      if (i === 25 || i === 50 || i === 75) {
         label = i;
       }
 
       scale.push(
-        <div key={i} className="slot-scale">
+        <h4 key={i} className="slot-scale">
           {label}
-        </div>
+        </h4>
       );
 
       let currentLabel = "";
@@ -104,9 +106,9 @@ class Range extends React.Component {
       }
 
       currentScale.push(
-        <div key={i} className="slot-scale">
+        <h4 key={i} className="slot-scale">
           {currentLabel}
-        </div>
+        </h4>
       );
 
       if (i === this.state.start) {
@@ -133,10 +135,8 @@ class Range extends React.Component {
           key={i}
           className="slot"
         >
-          {/* <div className="line-container"> */}
           <div className="thumb"></div>
           <div data-slot={i} className={lineClass} />
-          {/* </div> */}
           <span className="scale-mark"></span>
           <div className="thumb"></div>
           {minThumb}
@@ -147,16 +147,22 @@ class Range extends React.Component {
 
     return (
       <div className="container">
-        <EditableBox text={this.state.start} placeholder="Mínimo" type="input">
-          <input
-            type="number"
-            name="min"
-            min={this.state.min}
-            max={this.state.end}
-            placeholder="Escribí el mínimo"
-            value={this.state.start}
-            onChange={(e) => this.setState({ start: e.target.value })}
-          />
+        <EditableBox
+          className="editable-box"
+          text={this.state.start}
+          type="input"
+        >
+          <form>
+            <input
+              type="number"
+              name="min"
+              min={this.state.min}
+              max={`${this.state.end}`}
+              aria-label="Cantidad mínima"
+              value={this.state.start}
+              onChange={(e) => this.validate(e)}
+            />
+          </form>
         </EditableBox>
         <div className="range-container">
           <div className="example-1">
@@ -168,18 +174,19 @@ class Range extends React.Component {
             </div>
           </div>
         </div>
-        <EditableBox text={this.state.end} placeholder="Máximo" type="input">
-          <input
-            type="number"
-            name="max"
-            min={this.state.start}
-            max={this.state.max}
-            placeholder="Escribí el máximo"
-            value={this.state.end}
-            onChange={(e) => this.setState({ end: e.target.value })}
-          />
+        <EditableBox text={this.state.end} type="input">
+          <form>
+            <input
+              type="number"
+              name="max"
+              min={this.state.start}
+              max={this.state.max}
+              aria-label="Cantidad máxima"
+              value={this.state.end}
+              onChange={(e) => this.setState({ end: e.target.value })}
+            />
+          </form>
         </EditableBox>
-        {/* <input className="maxSetter" /> */}
       </div>
     );
   }

@@ -1,9 +1,7 @@
 * {
   font-family: "arial", "Helvetica", sans-serif;
 }
-h1,
 h2,
-h3,
 h4 {
   padding: 0;
   margin: 0;
@@ -152,4 +150,51 @@ input {
   -moz-appearance: none;
   height: 20px;
   width: 30px;
+}
+
+input:invalid {
+  background-color: red;
+}
+
+.switch {
+  width: 38px;
+  border-radius: 11px;
+}
+
+/* The toggle knob */
+.switch::after {
+  left: 2px;
+  top: 2px;
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+  background: var(--ab, var(--border));
+  transform: translateX(var(--x, 0));
+}
+
+/* Change color and position when checked */
+.switch:checked {
+  --ab: var(--active-inner);
+  --x: 17px;
+}
+
+/* Drop the opacity of the toggle knob when the input is disabled */
+.switch:disabled:not(:checked)::after {
+  opacity: 0.6;
+}
+
+button {
+  display: inline-block;
+  padding: 0.35em 1.2em;
+  border: 0.1em solid #ffffff;
+  margin: 0 0.3em 0.3em 0;
+  border-radius: 0.12em;
+  box-sizing: border-box;
+  text-decoration: none;
+  background-color: #aea4bf;
+  font-family: "arial", "Helvetica", sans-serif;
+}
+
+button:hover {
+  background-color: #ffffff;
 }
