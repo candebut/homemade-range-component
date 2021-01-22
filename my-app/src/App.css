@@ -14,17 +14,21 @@ h4 {
 }
 .slider-container {
   position: relative;
+  background-color: lightblue;
 }
 
 .slider-selected-scale {
+  background-color: orange;
 }
 .slider {
   position: relative;
   user-select: none;
   margin-top: 10px;
+  background-color: blue;
 }
 
 .slider-scale {
+  background-color: red;
 }
 
 .slider-thumb {
@@ -83,4 +87,29 @@ h4 {
 .line-selected {
   height: 4px;
   background-color: #191919;
+}
+
+.line-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.thumb {
+  background-color: gray;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  top: -8px;
+  touch-action: none;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+input {
+  height: 20px;
+  width: 30px;
 }

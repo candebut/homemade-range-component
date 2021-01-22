@@ -1,4 +1,5 @@
 import React from "react";
+import EditableBox from "./EditableBox";
 
 class Range extends React.Component {
   state = {
@@ -7,7 +8,9 @@ class Range extends React.Component {
     slots: this.props.slots,
     start: this.props.start,
     end: this.props.end,
-    labelMode: this.props.labelMode, // mid, long
+    labelMode: this.props.labelMode,
+    changeMax: false,
+    changeMin: false, // mid, long
   };
 
   onDragOver = (e) => {
@@ -71,6 +74,7 @@ class Range extends React.Component {
   };
 
   render() {
+    console.log(this.state);
     let scale = [];
     let slider = [];
     let currentScale = [];
@@ -126,7 +130,11 @@ class Range extends React.Component {
           key={i}
           className="slot"
         >
+          {/* <div className="line-container">
+            <div className="thumb"></div> */}
           <div data-slot={i} className={lineClass} />
+          {/* <div className="thumb"></div>
+          </div> */}
           <span className="scale-mark"></span>
           {minThumb}
           {maxThumb}
@@ -135,18 +143,41 @@ class Range extends React.Component {
     }
 
     return (
-      <div>
-        <h2>React Slider</h2>
+      <div className="container">
+        <EditableBox text={this.state.start} placeholder="Mínimo" type="input">
+          <input
+            type="number"
+            name="min"
+            min={this.state.min}
+            max={this.state.end}
+            placeholder="Escribí el mínimo"
+            value={this.state.start}
+            onChange={(e) => this.setState({ start: e.target.value })}
+          />
+        </EditableBox>
+        {/* <input className="minSetter" /> */}
+        <div className="range-container">
+          <div className="example-1">
+            <div className="slider-container">
+              <div className="slider-scale">{scale}</div>
 
-        <div className="example-1">
-          <div className="slider-container">
-            <div className="slider-scale">{scale}</div>
-
-            <div className="slider">{slider}</div>
-
-            <div className="slider-selected-scale">{currentScale}</div>
+              <div className="slider">{slider}</div>
+              <div className="slider-selected-scale">{currentScale}</div>
+            </div>
           </div>
         </div>
+        <EditableBox text={this.state.end} placeholder="Máximo" type="input">
+          <input
+            type="number"
+            name="max"
+            min={this.state.start}
+            max={this.state.max}
+            placeholder="Escribí el máximo"
+            value={this.state.end}
+            onChange={(e) => this.setState({ end: e.target.value })}
+          />
+        </EditableBox>
+        {/* <input className="maxSetter" /> */}
       </div>
     );
   }
