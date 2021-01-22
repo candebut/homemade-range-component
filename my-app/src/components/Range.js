@@ -9,8 +9,6 @@ class Range extends React.Component {
     start: this.props.start,
     end: this.props.end,
     labelMode: this.props.labelMode,
-    changeMax: false,
-    changeMin: false, // mid, long
   };
 
   onDragOver = (e) => {
@@ -28,8 +26,11 @@ class Range extends React.Component {
   onDrop = (e, target) => {
     //let source = e.dataTransfer.getData("text/plain");
 
+    //determina si es el de start o end
     let source = this.sliderType;
+    //numero de slot en el que estamos parados
     let slot = Number(e.target.dataset.slot);
+    console.log(slot);
 
     if (isNaN(slot)) return;
 
@@ -84,7 +85,15 @@ class Range extends React.Component {
     for (let i = 0; i <= this.state.slots; i++) {
       let label = "";
 
-      if (i == 0 || i == 12 || i == 24) {
+      //cambiar cuando sea con franjas
+      if (
+        i === 15 ||
+        i === 30 ||
+        i === 45 ||
+        i === 60 ||
+        i === 75 ||
+        i === 90
+      ) {
         label = i;
       }
 
@@ -130,12 +139,12 @@ class Range extends React.Component {
           key={i}
           className="slot"
         >
-          {/* <div className="line-container">
-            <div className="thumb"></div> */}
+          {/* <div className="line-container"> */}
+          <div className="thumb"></div>
           <div data-slot={i} className={lineClass} />
-          {/* <div className="thumb"></div>
-          </div> */}
+          {/* </div> */}
           <span className="scale-mark"></span>
+          <div className="thumb"></div>
           {minThumb}
           {maxThumb}
         </div>
