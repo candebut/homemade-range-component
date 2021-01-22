@@ -32,7 +32,7 @@ class App extends React.Component {
         {this.state.loading ? (
           "Cargando..."
         ) : (
-          <div>
+          <div className="app-container">
             <h2>React Slider</h2>
             <Range
               min={this.state.min}

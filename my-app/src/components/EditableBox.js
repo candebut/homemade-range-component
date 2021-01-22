@@ -20,7 +20,7 @@ const Editable = ({ text, type, children, ...props }) => {
           {children}
         </div>
       ) : (
-        <div onClick={() => setEditing(true)}>
+        <div className="editable-box" onClick={() => setEditing(true)}>
           <span>{text}</span>
         </div>
       )}

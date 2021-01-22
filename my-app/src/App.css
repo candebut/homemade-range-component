@@ -7,6 +7,16 @@ h3,
 h4 {
   padding: 0;
   margin: 0;
+  font-family: "Roboto Mono", monospace;
+  color: #3b252c;
+  margin-top: 20px;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .example-1 {
@@ -14,22 +24,20 @@ h4 {
 }
 .slider-container {
   position: relative;
-  background-color: lightblue;
 }
-
+/* 
 .slider-selected-scale {
   background-color: orange;
-}
+} */
 .slider {
   position: relative;
   user-select: none;
   margin-top: 10px;
-  background-color: blue;
 }
 
-.slider-scale {
+/* .slider-scale {
   background-color: red;
-}
+} */
 
 .slider-thumb {
   position: absolute;
@@ -44,6 +52,7 @@ h4 {
   cursor: -moz-grab;
   cursor: -webkit-grab;
   transition: 0.3s;
+  z-index: 999;
 }
 
 .slider-thumb:active {
@@ -58,11 +67,11 @@ h4 {
 }
 
 .slider-thumb-min {
-  background-color: red;
+  background-color: #aea4bf;
 }
 
 .slider-thumb-max {
-  background-color: blue;
+  background-color: #8f6593;
 }
 
 .slot {
@@ -125,7 +134,21 @@ h4 {
   align-items: center;
 }
 
+.editable-box {
+  font-family: "Roboto Mono", monospace;
+  color: #3b252c;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  height: 20px;
+  width: 30px;
+  color: pink;
+}
+
 input {
+  font-family: "Roboto Mono", monospace;
+  color: #3b252c;
+  -webkit-appearance: none;
+  -moz-appearance: none;
   height: 20px;
   width: 30px;
 }
