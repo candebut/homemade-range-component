@@ -27,7 +27,6 @@ class Range extends React.Component {
   onDrop = (e, target) => {
     let source = this.sliderType;
     let slot = Number(e.target.dataset.slot);
-    console.log(slot);
 
     if (isNaN(slot)) return;
 
@@ -133,10 +132,13 @@ class Range extends React.Component {
             />
             <span className="scale-mark"></span>
             <div className="thumb"></div>
-            {item === this.state.start ? <this.MinSlider /> : null}
-            {item === this.state.end ? <this.MaxSlider /> : null}
-            <h4 className="slot-scale">{item}</h4>
+            {item === this.state.start ? (
+              <this.MinSlider />
+            ) : item === this.state.end ? (
+              <this.MaxSlider />
+            ) : null}
           </div>
+          <h4 className="slot-scale">{item}</h4>
         </>
       ));
     } else {
@@ -153,18 +155,6 @@ class Range extends React.Component {
             {label}
           </h4>
         );
-
-        // let currentLabel = "";
-
-        // if (i === this.state.start || i === this.state.end) {
-        //   currentLabel = i;
-        // }
-
-        // currentScale.push(
-        //   <h4 key={i} className="slot-scale">
-        //     {currentLabel}
-        //   </h4>
-        // );
 
         if (i === this.state.start) {
           minThumb = <this.MinSlider />;
