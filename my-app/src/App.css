@@ -24,19 +24,12 @@ h4 {
 .slider-container {
   position: relative;
 }
-/* 
-.slider-selected-scale {
-  background-color: orange;
-} */
+
 .slider {
   position: relative;
   user-select: none;
   margin-top: 10px;
 }
-
-/* .slider-scale {
-  background-color: red;
-} */
 
 .slider-thumb {
   position: absolute;
@@ -81,11 +74,11 @@ h4 {
 }
 
 .fixed-slot {
-  width: 20px;
+  width: 60px;
 }
 
 .classic-slot {
-  width: 1%;
+  width: 10px;
 }
 
 .scale-mark {
@@ -97,10 +90,17 @@ h4 {
 .slot-scale {
   text-align: center;
   display: inline-block;
-  width: 20px;
   height: 20px;
   color: lightgray;
   user-select: none;
+}
+
+.custom-scale {
+  width: 30px;
+}
+
+.slot-scale .current {
+  width: 10px;
 }
 
 .slot > .slider-thumb {
@@ -110,29 +110,19 @@ h4 {
 .line {
   position: absolute;
   background-color: lightgray;
-  height: 2px;
   width: 20px;
+  height: 2px;
   top: 12px;
+}
+
+.custom-line {
+  width: 70px;
 }
 
 .line-selected {
   height: 4px;
   background-color: #191919;
 }
-/* 
-.line-container {
-  display: flex;
-  flex-direction: row;
-} */
-
-/* .thumb {
-  background-color: gray;
-  height: 20px;
-  width: 20px;
-  border-radius: 50%;
-  top: -8px;
-  touch-action: none;
-} */
 
 .container {
   display: flex;
@@ -156,7 +146,7 @@ input {
   -webkit-appearance: none;
   -moz-appearance: none;
   height: 20px;
-  width: 150px;
+  width: 50px;
 }
 
 input:invalid {

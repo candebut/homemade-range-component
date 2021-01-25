@@ -140,21 +140,31 @@ class Range extends React.Component {
             <div className="thumb"></div>
             <div
               data-slot={item}
-              className={`line ${
-                item > this.state.start && item < this.state.end
+              className={`line ${this.state.fixed ? "custom-line" : ""} ${
+                item >= this.state.start && item < this.state.end
                   ? "line-selected"
                   : ""
               }`}
             />
-            <span className="scale-mark"></span>
+            {this.state.fixed ? null : <span className="scale-mark"></span>}
             <div className="thumb"></div>
             {item === this.state.start ? (
               <this.MinSlider />
             ) : item === this.state.end ? (
               <this.MaxSlider />
             ) : null}
+            <h4
+              className={`slot-scale ${
+                this.state.fixed ? "custom-scale" : "current"
+              }`}
+            >
+              {this.state.fixed
+                ? item
+                : item === 25 || item === 50 || item === 75
+                ? item
+                : null}
+            </h4>
           </div>
-          <h4 className="slot-scale">{item}</h4>
         </>
       ));
     };
