@@ -21,16 +21,13 @@ class App extends React.Component {
     try {
       const response = await myFetch("minmaxvalues");
       const fixedResponse = await myFetch("rangevalues");
-      console.log(fixedResponse);
       this.setState({
-        //slots debe ser array.length en ejercicio 2. Debería haber dos llamadas.
         min: response.min,
         slots: response.max,
         max: response.max,
         fixedValues: fixedResponse.rangeValues,
         loading: false,
       });
-      console.log(this.state.fixedValues);
     } catch (error) {
       alert("Hubo un error. Intente nuevamente.");
     }

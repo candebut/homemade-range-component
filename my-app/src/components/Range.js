@@ -3,7 +3,6 @@ import EditableBox from "./EditableBox";
 
 class Range extends React.Component {
   state = {
-    //TODO ver como poner para que en el fixed empiece en 1.99 y end en 7.99
     min: this.props.min,
     max: this.props.max,
     slots: this.props.slots,
@@ -31,12 +30,13 @@ class Range extends React.Component {
     if (isNaN(slot)) return;
 
     if (source === "min") {
-      if (slot >= this.state.end) return;
+      //TODO no anda validacion: cuando es mas chico o mas grande de lo que deberia, se muestra la bullet igual
+      if (slot >= this.state.end || slot < this.state.min) return;
       this.setState({
         start: slot,
       });
     } else if (source === "max") {
-      if (slot <= this.state.start) return;
+      if (slot <= this.state.start || slot > this.state.max) return;
       this.setState({
         end: slot,
       });
@@ -44,8 +44,8 @@ class Range extends React.Component {
     this.sliderType = null;
   };
 
-  getCloser = (e) => {
-    let counts = this.state.fixedValues,
+  getCloser = (e, array) => {
+    let counts = array,
       goal = e.target.value;
 
     let closest = counts.reduce(function (prev, curr) {
@@ -55,13 +55,33 @@ class Range extends React.Component {
   };
 
   validateStart = (e) => {
-    let closestValue = this.getCloser(e);
+    let closestValue = this.getCloser(e, this.state.fixedValues);
     this.setState({ start: closestValue });
   };
 
   validateEnd = (e) => {
-    let closestValue = this.getCloser(e);
+    let closestValue = this.getCloser(e, this.state.fixedValues);
     this.setState({ end: closestValue });
+  };
+
+  getNonFixedArray = () => {
+    let nonFixedList = [];
+    for (let i = 0; i <= this.state.slots; i++) {
+      nonFixedList.push(i);
+    }
+    return nonFixedList;
+  };
+
+  handleChangeStart = (e) => {
+    let nonFixedList = this.getNonFixedArray();
+    let exactValue = this.getCloser(e, nonFixedList);
+    this.setState({ start: exactValue });
+  };
+
+  handleChangeEnd = (e) => {
+    let nonFixedList = this.getNonFixedArray();
+    let exactValue = this.getCloser(e, nonFixedList);
+    this.setState({ end: exactValue });
   };
 
   MinSlider = () => {
@@ -99,17 +119,13 @@ class Range extends React.Component {
     ) {
       alert("El numero ingresado es incorrecto");
     }
-    let scale = [];
     let slider = [];
     let currentScale = [];
-    let minThumb = null;
-    let maxThumb = null;
+    let nonFixedList = this.getNonFixedArray();
 
-    if (this.state.fixed === true) {
-      console.log(this.state.fixedValues);
-      this.items = this.state.fixedValues.map((item, i) => (
+    const getItems = (array) => {
+      this.items = array.map((item, i) => (
         <>
-          {console.log(i)}
           <div
             data-slot={item}
             onDragOver={this.onDragOver}
@@ -141,57 +157,10 @@ class Range extends React.Component {
           <h4 className="slot-scale">{item}</h4>
         </>
       ));
-    } else {
-      for (let i = 0; i <= this.state.slots; i++) {
-        let label = "";
+    };
 
-        //cambiar cuando sea con franjas
-        if (i === 25 || i === 50 || i === 75) {
-          label = i;
-        }
-
-        scale.push(
-          <h4 key={i} className="slot-scale">
-            {label}
-          </h4>
-        );
-
-        if (i === this.state.start) {
-          minThumb = <this.MinSlider />;
-        } else if (i === this.state.end) {
-          maxThumb = <this.MaxSlider />;
-        } else {
-          minThumb = null;
-          maxThumb = null;
-        }
-
-        let lineClass = "line";
-
-        if (i > this.state.start && i < this.state.end) {
-          lineClass += " line-selected";
-        }
-        slider.push(
-          <div
-            data-slot={i}
-            onDragOver={this.onDragOver}
-            onTouchMove={this.onDragOver}
-            onTouchEnd={this.onDrop}
-            onDrop={this.onDrop}
-            key={i}
-            className={`slot ${
-              this.state.fixed ? "fixed-slot" : "classic-slot"
-            }`}
-          >
-            <div className="thumb"></div>
-            <div data-slot={i} className={lineClass} />
-            <span className="scale-mark"></span>
-            <div className="thumb"></div>
-            {minThumb}
-            {maxThumb}
-          </div>
-        );
-      }
-    }
+    if (this.state.fixed === true) getItems(this.state.fixedValues);
+    else getItems(nonFixedList);
 
     return (
       <div className="container">
@@ -211,7 +180,7 @@ class Range extends React.Component {
               onChange={
                 this.state.fixed
                   ? (e) => this.validateStart(e)
-                  : (e) => this.setState({ start: e.target.value })
+                  : (e) => this.handleChangeStart(e)
               }
             />
           </form>
@@ -219,9 +188,7 @@ class Range extends React.Component {
         <div className="range-container">
           <div className="example-1">
             <div className="slider-container">
-              <div className="slider-scale">
-                {this.state.fixed ? this.items : scale}
-              </div>
+              <div className="slider-scale">{this.items}</div>
 
               <div className="slider">{slider}</div>
               <div className="slider-selected-scale">{currentScale}</div>
@@ -240,7 +207,7 @@ class Range extends React.Component {
               onChange={
                 this.state.fixed
                   ? (e) => this.validateEnd(e)
-                  : (e) => this.setState({ end: e.target.value })
+                  : (e) => this.handleChangeEnd(e)
               }
             />
           </form>
