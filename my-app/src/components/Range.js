@@ -46,14 +46,23 @@ class Range extends React.Component {
   };
 
   getCloser = (e) => {
-    var counts = this.state.fixedValues,
+    let counts = this.state.fixedValues,
       goal = e.target.value;
 
-    var closest = counts.reduce(function (prev, curr) {
+    let closest = counts.reduce(function (prev, curr) {
       return Math.abs(curr - goal) < Math.abs(prev - goal) ? curr : prev;
     });
+    return closest;
+  };
 
-    this.setState({ start: closest });
+  validateStart = (e) => {
+    let closestValue = this.getCloser(e);
+    this.setState({ start: closestValue });
+  };
+
+  validateEnd = (e) => {
+    let closestValue = this.getCloser(e);
+    this.setState({ end: closestValue });
   };
 
   MinSlider = () => {
@@ -211,7 +220,7 @@ class Range extends React.Component {
               value={this.state.start}
               onChange={
                 this.state.fixed
-                  ? (e) => this.getCloser(e)
+                  ? (e) => this.validateStart(e)
                   : (e) => this.setState({ start: e.target.value })
               }
             />
@@ -240,7 +249,7 @@ class Range extends React.Component {
               value={this.state.end}
               onChange={
                 this.state.fixed
-                  ? (e) => this.getCloser(e)
+                  ? (e) => this.validateEnd(e)
                   : (e) => this.setState({ end: e.target.value })
               }
             />
