@@ -1,6 +1,5 @@
 import React from "react";
 import Range from "./components/Range.js";
-import Button from "./components/Button.js";
 import "./App.css";
 import { myFetch } from "./utils/helper";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
