@@ -109,9 +109,9 @@ class Range extends React.Component {
       console.log(this.state.fixedValues);
       this.items = this.state.fixedValues.map((item, i) => (
         <>
-          {/* <h4 className="slot-scale">{item}</h4> */}
+          {console.log(i)}
           <div
-            data-slot={i}
+            data-slot={item}
             onDragOver={this.onDragOver}
             onTouchMove={this.onDragOver}
             onTouchEnd={this.onDrop}
@@ -123,7 +123,7 @@ class Range extends React.Component {
           >
             <div className="thumb"></div>
             <div
-              data-slot={i}
+              data-slot={item}
               className={`line ${
                 item > this.state.start && item < this.state.end
                   ? "line-selected"
