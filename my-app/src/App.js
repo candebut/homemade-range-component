@@ -10,9 +10,10 @@ class App extends React.Component {
     min: 0,
     max: 0,
     slots: 0,
-    start: 10,
-    end: 20,
+    start: 2,
+    end: 6,
     loading: true,
+    fixed: false,
     fixedValues: [],
   };
 
@@ -22,6 +23,7 @@ class App extends React.Component {
       const fixedResponse = await myFetch("rangevalues");
       console.log(fixedResponse);
       this.setState({
+        //slots debe ser array.length en ejercicio 2. Debería haber dos llamadas.
         min: response.min,
         slots: response.max,
         max: response.max,
@@ -65,9 +67,11 @@ class App extends React.Component {
                     max={
                       this.state.fixedValues[this.state.fixedValues.length - 1]
                     }
-                    slots={this.state.slots}
-                    start={this.state.start}
-                    end={this.state.end}
+                    slots={this.state.fixedValues.length}
+                    start={this.state.fixedValues[0]}
+                    end={
+                      this.state.fixedValues[this.state.fixedValues.length - 1]
+                    }
                     labelMode={this.state.labelMode}
                     fixed={true}
                     fixedValues={this.state.fixedValues}

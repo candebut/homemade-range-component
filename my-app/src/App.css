@@ -76,9 +76,16 @@ h4 {
 .slot {
   text-align: center;
   display: inline-block;
-  width: 1%;
   height: 20px;
   background-color: none;
+}
+
+.fixed-slot {
+  width: 10px;
+}
+
+.classic-slot {
+  width: 1%;
 }
 
 .scale-mark {
@@ -149,7 +156,7 @@ input {
   -webkit-appearance: none;
   -moz-appearance: none;
   height: 20px;
-  width: 30px;
+  width: 150px;
 }
 
 input:invalid {

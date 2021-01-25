@@ -3,6 +3,7 @@ import EditableBox from "./EditableBox";
 
 class Range extends React.Component {
   state = {
+    //TODO ver como poner para que en el fixed empiece en 1.99 y end en 7.99
     min: this.props.min,
     max: this.props.max,
     slots: this.props.slots,
@@ -42,6 +43,17 @@ class Range extends React.Component {
       });
     }
     this.sliderType = null;
+  };
+
+  getCloser = (e) => {
+    var counts = this.state.fixedValues,
+      goal = e.target.value;
+
+    var closest = counts.reduce(function (prev, curr) {
+      return Math.abs(curr - goal) < Math.abs(prev - goal) ? curr : prev;
+    });
+
+    this.setState({ start: closest });
   };
 
   MinSlider = () => {
@@ -85,64 +97,101 @@ class Range extends React.Component {
     let minThumb = null;
     let maxThumb = null;
 
-    for (let i = 0; i <= this.state.slots; i++) {
-      let label = "";
+    if (this.state.fixed === true) {
+      console.log(this.state.fixedValues);
+      this.items = this.state.fixedValues.map((item, i) => (
+        <>
+          {/* <h4 className="slot-scale">{item}</h4> */}
+          <div
+            data-slot={i}
+            onDragOver={this.onDragOver}
+            onTouchMove={this.onDragOver}
+            onTouchEnd={this.onDrop}
+            onDrop={this.onDrop}
+            key={i}
+            className={`slot ${
+              this.state.fixed ? "fixed-slot" : "classic-slot"
+            }`}
+          >
+            <div className="thumb"></div>
+            <div
+              data-slot={i}
+              className={`line ${
+                item > this.state.start && item < this.state.end
+                  ? "line-selected"
+                  : ""
+              }`}
+            />
+            <span className="scale-mark"></span>
+            <div className="thumb"></div>
+            {item === this.state.start ? <this.MinSlider /> : null}
+            {item === this.state.end ? <this.MaxSlider /> : null}
+            <h4 className="slot-scale">{item}</h4>
+          </div>
+        </>
+      ));
+    } else {
+      for (let i = 0; i <= this.state.slots; i++) {
+        let label = "";
 
-      //cambiar cuando sea con franjas
-      if (i === 25 || i === 50 || i === 75) {
-        label = i;
+        //cambiar cuando sea con franjas
+        if (i === 25 || i === 50 || i === 75) {
+          label = i;
+        }
+
+        scale.push(
+          <h4 key={i} className="slot-scale">
+            {label}
+          </h4>
+        );
+
+        // let currentLabel = "";
+
+        // if (i === this.state.start || i === this.state.end) {
+        //   currentLabel = i;
+        // }
+
+        // currentScale.push(
+        //   <h4 key={i} className="slot-scale">
+        //     {currentLabel}
+        //   </h4>
+        // );
+
+        if (i === this.state.start) {
+          minThumb = <this.MinSlider />;
+        } else if (i === this.state.end) {
+          maxThumb = <this.MaxSlider />;
+        } else {
+          minThumb = null;
+          maxThumb = null;
+        }
+
+        let lineClass = "line";
+
+        if (i > this.state.start && i < this.state.end) {
+          lineClass += " line-selected";
+        }
+        slider.push(
+          <div
+            data-slot={i}
+            onDragOver={this.onDragOver}
+            onTouchMove={this.onDragOver}
+            onTouchEnd={this.onDrop}
+            onDrop={this.onDrop}
+            key={i}
+            className={`slot ${
+              this.state.fixed ? "fixed-slot" : "classic-slot"
+            }`}
+          >
+            <div className="thumb"></div>
+            <div data-slot={i} className={lineClass} />
+            <span className="scale-mark"></span>
+            <div className="thumb"></div>
+            {minThumb}
+            {maxThumb}
+          </div>
+        );
       }
-
-      scale.push(
-        <h4 key={i} className="slot-scale">
-          {label}
-        </h4>
-      );
-
-      let currentLabel = "";
-
-      if (i === this.state.start || i === this.state.end) {
-        currentLabel = i;
-      }
-
-      currentScale.push(
-        <h4 key={i} className="slot-scale">
-          {currentLabel}
-        </h4>
-      );
-
-      if (i === this.state.start) {
-        minThumb = <this.MinSlider />;
-      } else if (i === this.state.end) {
-        maxThumb = <this.MaxSlider />;
-      } else {
-        minThumb = null;
-        maxThumb = null;
-      }
-
-      let lineClass = "line";
-
-      if (i > this.state.start && i < this.state.end) {
-        lineClass += " line-selected";
-      }
-      slider.push(
-        <div
-          data-slot={i}
-          onDragOver={this.onDragOver}
-          onTouchMove={this.onDragOver}
-          onTouchEnd={this.onDrop}
-          onDrop={this.onDrop}
-          key={i}
-          className="slot"
-        >
-          <div className="thumb"></div>
-          <div data-slot={i} className={lineClass} />
-          <span className="scale-mark"></span>
-          <div className="thumb"></div>
-          {minThumb}
-          {maxThumb}
-        </div>
-      );
     }
 
     return (
@@ -160,14 +209,20 @@ class Range extends React.Component {
               max={`${this.state.end}`}
               aria-label="Cantidad mínima"
               value={this.state.start}
-              onChange={(e) => this.validate(e)}
+              onChange={
+                this.state.fixed
+                  ? (e) => this.getCloser(e)
+                  : (e) => this.setState({ start: e.target.value })
+              }
             />
           </form>
         </EditableBox>
         <div className="range-container">
           <div className="example-1">
             <div className="slider-container">
-              <div className="slider-scale">{scale}</div>
+              <div className="slider-scale">
+                {this.state.fixed ? this.items : scale}
+              </div>
 
               <div className="slider">{slider}</div>
               <div className="slider-selected-scale">{currentScale}</div>
@@ -183,7 +238,11 @@ class Range extends React.Component {
               max={this.state.max}
               aria-label="Cantidad máxima"
               value={this.state.end}
-              onChange={(e) => this.setState({ end: e.target.value })}
+              onChange={
+                this.state.fixed
+                  ? (e) => this.getCloser(e)
+                  : (e) => this.setState({ end: e.target.value })
+              }
             />
           </form>
         </EditableBox>
