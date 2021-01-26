@@ -1,6 +1,7 @@
 import React from "react";
 import Range from "./components/Range.js";
 import "./App.css";
+import { myFetch } from "./utils/helper";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 class App extends React.Component {
@@ -17,13 +18,8 @@ class App extends React.Component {
 
   async componentDidMount() {
     try {
-      const res = await fetch("https://demo1511398.mockable.io/minmaxvalues");
-      const fixedRes = await fetch(
-        "https://demo1511398.mockable.io/rangevalues"
-      );
-      if (!res.ok || !fixedRes.ok) throw new Error("something went wrong");
-      let response = await res.json();
-      let fixedResponse = await fixedRes.json();
+      const response = await myFetch("minmaxvalues");
+      const fixedResponse = await myFetch("rangevalues");
       this.setState({
         min: response.min,
         slots: response.max,
@@ -31,8 +27,8 @@ class App extends React.Component {
         fixedValues: fixedResponse.rangeValues,
         loading: false,
       });
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      console.log(error);
     }
   }
   render() {

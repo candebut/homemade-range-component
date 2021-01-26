@@ -175,14 +175,17 @@ class Range extends React.Component {
     return (
       <div className="container">
         <EditableBox
+          id="min-box"
           className="editable-box"
           text={this.state.start}
           type="input"
         >
           <form>
             <input
+              className="changable-value"
               type="number"
               name="min"
+              id="min"
               min={this.state.min}
               max={`${this.state.end}`}
               aria-label="Cantidad mínima"
@@ -205,11 +208,13 @@ class Range extends React.Component {
             </div>
           </div>
         </div>
-        <EditableBox text={this.state.end} type="input">
+        <EditableBox text={this.state.end} type="input" id="max-box">
           <form>
             <input
+              className="changable-value"
               type="number"
               name="max"
+              id="max"
               min={this.state.start}
               max={this.state.max}
               aria-label="Cantidad máxima"
