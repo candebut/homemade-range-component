@@ -1,0 +1,147 @@
+.range-box {
+  margin-top: 50px;
+}
+
+.slider-container {
+  position: relative;
+}
+
+.slider {
+  position: relative;
+  user-select: none;
+  margin-top: 10px;
+}
+
+.slider-thumb {
+  position: absolute;
+  background-color: gray;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  top: -8px;
+  touch-action: none;
+  cursor: move;
+  cursor: grab;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+  transition: 0.3s;
+  z-index: 999;
+}
+
+.slider-thumb:active {
+  cursor: grabbing !important;
+  cursor: -moz-grabbing;
+  cursor: -webkit-grabbing;
+}
+
+.slider-thumb:hover {
+  width: 25px;
+  height: 25px;
+}
+
+.slider-thumb-min {
+  background-color: #aea4bf;
+}
+
+.slider-thumb-max {
+  background-color: #8f6593;
+}
+
+.slot {
+  text-align: center;
+  display: inline-block;
+  height: 20px;
+  background-color: none;
+}
+
+.fixed-slot {
+  width: 60px;
+}
+
+.classic-slot {
+  width: 10px;
+}
+
+.scale-mark {
+  position: absolute;
+  border: 0.5px solid lightgray;
+  height: 10px;
+}
+
+.slot-scale {
+  text-align: center;
+  display: inline-block;
+  height: 20px;
+  color: lightgray;
+  user-select: none;
+}
+
+.custom-scale {
+  width: 30px;
+}
+
+.slot-scale .current {
+  width: 10px;
+}
+
+.slot > .slider-thumb {
+  top: 3px;
+}
+
+.line {
+  position: absolute;
+  background-color: lightgray;
+  width: 20px;
+  height: 2px;
+  top: 12px;
+}
+
+.custom-line {
+  width: 70px;
+}
+
+.line-selected {
+  height: 4px;
+  background-color: #191919;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.editable-box {
+  font-family: "Roboto Mono", monospace;
+  color: #3b252c;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  height: 20px;
+  width: 30px;
+  color: pink;
+}
+
+input {
+  font-family: "Roboto Mono", monospace;
+  color: #3b252c;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  height: 20px;
+  width: 25px;
+}
+
+input:invalid {
+  background-color: red;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}

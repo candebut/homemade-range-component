@@ -1,5 +1,6 @@
 import React from "react";
 import EditableBox from "./EditableBox";
+import "../styles/Range.css";
 
 class Range extends React.Component {
   state = {
@@ -26,22 +27,62 @@ class Range extends React.Component {
   onDrop = (e, target) => {
     let source = this.sliderType;
     let slot = Number(e.target.dataset.slot);
-    console.log(slot);
 
     if (isNaN(slot)) return;
 
     if (source === "min") {
-      if (slot >= this.state.end) return;
+      //TODO no anda validacion: cuando es mas chico o mas grande de lo que deberia, se muestra la bullet igual
+      if (slot >= this.state.end || slot < this.state.min) return;
       this.setState({
         start: slot,
       });
     } else if (source === "max") {
-      if (slot <= this.state.start) return;
+      if (slot <= this.state.start || slot > this.state.max) return;
       this.setState({
         end: slot,
       });
     }
     this.sliderType = null;
+  };
+
+  getCloser = (e, array) => {
+    let counts = array,
+      goal = e.target.value;
+
+    let closest = counts.reduce(function (prev, curr) {
+      return Math.abs(curr - goal) < Math.abs(prev - goal) ? curr : prev;
+    });
+    return closest;
+  };
+
+  validateStart = (e) => {
+    let closestValue = this.getCloser(e, this.state.fixedValues);
+    this.setState({ start: closestValue });
+  };
+
+  validateEnd = (e) => {
+    let closestValue = this.getCloser(e, this.state.fixedValues);
+    this.setState({ end: closestValue });
+  };
+
+  getNonFixedArray = () => {
+    let nonFixedList = [];
+    for (let i = 0; i <= this.state.slots; i++) {
+      nonFixedList.push(i);
+    }
+    return nonFixedList;
+  };
+
+  handleChangeStart = (e) => {
+    let nonFixedList = this.getNonFixedArray();
+    let exactValue = this.getCloser(e, nonFixedList);
+    this.setState({ start: exactValue });
+  };
+
+  handleChangeEnd = (e) => {
+    let nonFixedList = this.getNonFixedArray();
+    let exactValue = this.getCloser(e, nonFixedList);
+    this.setState({ end: exactValue });
   };
 
   MinSlider = () => {
@@ -79,111 +120,111 @@ class Range extends React.Component {
     ) {
       alert("El numero ingresado es incorrecto");
     }
-    let scale = [];
     let slider = [];
     let currentScale = [];
-    let minThumb = null;
-    let maxThumb = null;
+    let nonFixedList = this.getNonFixedArray();
 
-    for (let i = 0; i <= this.state.slots; i++) {
-      let label = "";
+    const getItems = (array) => {
+      this.items = array.map((item, i) => (
+        <>
+          <div
+            data-slot={item}
+            onDragOver={this.onDragOver}
+            onTouchMove={this.onDragOver}
+            onTouchEnd={this.onDrop}
+            onDrop={this.onDrop}
+            key={i}
+            className={`slot ${
+              this.state.fixed ? "fixed-slot" : "classic-slot"
+            }`}
+          >
+            <div className="thumb"></div>
+            <div
+              data-slot={item}
+              className={`line ${this.state.fixed ? "custom-line" : ""} ${
+                item >= this.state.start && item < this.state.end
+                  ? "line-selected"
+                  : ""
+              }`}
+            />
+            {this.state.fixed ? null : <span className="scale-mark"></span>}
+            <div className="thumb"></div>
+            {item === this.state.start ? (
+              <this.MinSlider />
+            ) : item === this.state.end ? (
+              <this.MaxSlider />
+            ) : null}
+            <h4
+              className={`slot-scale ${
+                this.state.fixed ? "custom-scale" : "current"
+              }`}
+            >
+              {this.state.fixed
+                ? item
+                : item === 25 || item === 50 || item === 75
+                ? item
+                : null}
+            </h4>
+          </div>
+        </>
+      ));
+    };
 
-      //cambiar cuando sea con franjas
-      if (i === 25 || i === 50 || i === 75) {
-        label = i;
-      }
-
-      scale.push(
-        <h4 key={i} className="slot-scale">
-          {label}
-        </h4>
-      );
-
-      let currentLabel = "";
-
-      if (i === this.state.start || i === this.state.end) {
-        currentLabel = i;
-      }
-
-      currentScale.push(
-        <h4 key={i} className="slot-scale">
-          {currentLabel}
-        </h4>
-      );
-
-      if (i === this.state.start) {
-        minThumb = <this.MinSlider />;
-      } else if (i === this.state.end) {
-        maxThumb = <this.MaxSlider />;
-      } else {
-        minThumb = null;
-        maxThumb = null;
-      }
-
-      let lineClass = "line";
-
-      if (i > this.state.start && i < this.state.end) {
-        lineClass += " line-selected";
-      }
-      slider.push(
-        <div
-          data-slot={i}
-          onDragOver={this.onDragOver}
-          onTouchMove={this.onDragOver}
-          onTouchEnd={this.onDrop}
-          onDrop={this.onDrop}
-          key={i}
-          className="slot"
-        >
-          <div className="thumb"></div>
-          <div data-slot={i} className={lineClass} />
-          <span className="scale-mark"></span>
-          <div className="thumb"></div>
-          {minThumb}
-          {maxThumb}
-        </div>
-      );
-    }
+    if (this.state.fixed === true) getItems(this.state.fixedValues);
+    else getItems(nonFixedList);
 
     return (
       <div className="container">
         <EditableBox
+          id="min-box"
           className="editable-box"
           text={this.state.start}
           type="input"
         >
           <form>
             <input
+              className="changable-value"
               type="number"
               name="min"
+              id="min"
               min={this.state.min}
               max={`${this.state.end}`}
               aria-label="Cantidad mínima"
               value={this.state.start}
-              onChange={(e) => this.validate(e)}
+              onChange={
+                this.state.fixed
+                  ? (e) => this.validateStart(e)
+                  : (e) => this.handleChangeStart(e)
+              }
             />
           </form>
         </EditableBox>
         <div className="range-container">
-          <div className="example-1">
+          <div className="range-box">
             <div className="slider-container">
-              <div className="slider-scale">{scale}</div>
+              <div className="slider-scale">{this.items}</div>
 
               <div className="slider">{slider}</div>
               <div className="slider-selected-scale">{currentScale}</div>
             </div>
           </div>
         </div>
-        <EditableBox text={this.state.end} type="input">
+        <EditableBox text={this.state.end} type="input" id="max-box">
           <form>
             <input
+              className="changable-value"
               type="number"
               name="max"
+              id="max"
               min={this.state.start}
               max={this.state.max}
               aria-label="Cantidad máxima"
               value={this.state.end}
-              onChange={(e) => this.setState({ end: e.target.value })}
+              onChange={
+                this.state.fixed
+                  ? (e) => this.validateEnd(e)
+                  : (e) => this.handleChangeEnd(e)
+              }
             />
           </form>
         </EditableBox>
