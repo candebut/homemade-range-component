@@ -1,9 +1,8 @@
 import React from "react";
 import Range from "./components/Range.js";
-// import "./App.css";
 import "./styles/App.css";
 import { myFetch } from "./utils/helper";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 class App extends React.Component {
   state = {
@@ -41,10 +40,6 @@ class App extends React.Component {
           ) : (
             <div className="app-container">
               <h2>Mango Range Component</h2>
-
-              <Link to="/exercise1">Exercise 1</Link>
-              <Link to="/exercise2">Exercise 2</Link>
-
               <Switch>
                 <Route path="/exercise1">
                   <Range
