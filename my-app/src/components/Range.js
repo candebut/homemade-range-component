@@ -1,5 +1,6 @@
 import React from "react";
 import EditableBox from "./EditableBox";
+import "../styles/Range.css";
 
 class Range extends React.Component {
   state = {
@@ -199,7 +200,7 @@ class Range extends React.Component {
           </form>
         </EditableBox>
         <div className="range-container">
-          <div className="example-1">
+          <div className="range-box">
             <div className="slider-container">
               <div className="slider-scale">{this.items}</div>
 
