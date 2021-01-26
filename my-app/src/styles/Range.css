@@ -127,7 +127,7 @@ input {
   -webkit-appearance: none;
   -moz-appearance: none;
   height: 20px;
-  width: 25px;
+  width: 30px;
 }
 
 input:invalid {

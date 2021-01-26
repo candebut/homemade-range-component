@@ -183,6 +183,7 @@ class Range extends React.Component {
         >
           <form>
             <input
+              step="any"
               className="changable-value"
               type="number"
               name="min"
@@ -190,7 +191,6 @@ class Range extends React.Component {
               min={this.state.min}
               max={`${this.state.end}`}
               aria-label="Cantidad mínima"
-              value={this.state.start}
               onChange={
                 this.state.fixed
                   ? (e) => this.validateStart(e)
@@ -219,7 +219,6 @@ class Range extends React.Component {
               min={this.state.start}
               max={this.state.max}
               aria-label="Cantidad máxima"
-              value={this.state.end}
               onChange={
                 this.state.fixed
                   ? (e) => this.validateEnd(e)
