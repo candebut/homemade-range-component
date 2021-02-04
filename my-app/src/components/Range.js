@@ -31,7 +31,6 @@ class Range extends React.Component {
     if (isNaN(slot)) return;
 
     if (source === "min") {
-      //TODO no anda validacion: cuando es mas chico o mas grande de lo que deberia, se muestra la bullet igual
       if (slot >= this.state.end || slot < this.state.min) return;
       this.setState({
         start: slot,
