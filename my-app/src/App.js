@@ -39,9 +39,9 @@ class App extends React.Component {
             <h3>Cargando...</h3>
           ) : (
             <div className="app-container">
-              <h2>Mango Range Component</h2>
+              <h2>Custom Range Component</h2>
               <Switch>
-                <Route path="/exercise1">
+                <Route path="/">
                   <Range
                     min={this.state.min}
                     max={this.state.max}
@@ -53,7 +53,7 @@ class App extends React.Component {
                   />
                 </Route>
 
-                <Route path="/exercise2">
+                <Route path="/fixed">
                   <Range
                     min={this.state.fixedValues[0]}
                     max={
